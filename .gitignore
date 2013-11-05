@@ -16,3 +16,4 @@ ports
 /coverage/
 /lib-cov/
 /log/
+.project
