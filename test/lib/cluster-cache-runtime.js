@@ -44,7 +44,7 @@ function configureApp() {
 }
 
 listen({
-    'noWorkers': 8,
+    'noWorkers': 1,
     'createServer': require('http').createServer,
     'app': app,
     'port': 9090,
