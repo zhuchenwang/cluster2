@@ -44,7 +44,7 @@ function configureApp() {
 }
 
 listen({
-    'noWorkers': 1,
+    'noWorkers': 10,
     'createServer': require('http').createServer,
     'app': app,
     'port': 9090,
@@ -60,9 +60,7 @@ listen({
     'monCreateServer': require('http').createServer,
     'monPort': 9091
 }).then(function (resolved) {
-    //if (!require('cluster').isMaster) {
-        process.send({ready: true}); 
-    //}
+    process.send({ready: true});
 }).otherwise(function (err) {
     process.send({err: err});
 });

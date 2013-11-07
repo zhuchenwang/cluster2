@@ -16,9 +16,10 @@ describe('Cache Performance Test', function () {
         var deferred = when.defer();
         request.get(util.format('http://127.0.0.1:9090/set?key=%s&value=%s', key, value), function (err, res, body) {
             if (!err && res.statusCode === 200 && body === value) {
+                //console.log(process.pid + ': set ' + key + '=' + value);
                 deferred.resolve(body);
             }else {
-                deferred.reject('cache set error');
+                deferred.reject(err || 'cache set error');
             }
         });
         return deferred.promise;
@@ -27,9 +28,10 @@ describe('Cache Performance Test', function () {
         var deferred = when.defer();
         request.get(util.format('http://127.0.0.1:9090/get?key=%s', key), function (err, res, body) {
             if (!err && res.statusCode === 200 && (body === value || body === 'cache-test')) {
+                //console.log(process.pid + ': get ' + key);
                 deferred.resolve(body);
             }else {
-                deferred.reject('cache get error');
+                deferred.reject(err || 'cache get error');
             }
         });
         return deferred.promise;
@@ -53,6 +55,19 @@ describe('Cache Performance Test', function () {
         done();
     });
 
+    /*describe('# concurrent set', function () {
+        var tasks = [];
+        for (var i = 0; i < 200; i++) {
+            tasks.push(readTask);
+        }
+        it('should pass', function (done) {
+            parallel(tasks).then(function (values) {
+                done();
+            }).otherwise(function (err) {
+                done(err);
+            });
+        });
+    });*/
     describe('# 90% read, %10 write', function () {
         var tasks = [];
         for (var i=0; i<200; i++) {
